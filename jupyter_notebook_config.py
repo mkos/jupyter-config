@@ -174,7 +174,7 @@
 # platform dependent and determined by the python standard library `webbrowser`
 # module, unless it is overridden using the --browser (NotebookApp.browser)
 # configuration option.
-# c.NotebookApp.open_browser = True
+c.NotebookApp.open_browser = False
 
 # Hashed password to use for web authentication.
 # 
@@ -481,6 +481,41 @@
 # - path: the filesystem path to the file just written - model: the model
 # representing the file - contents_manager: this ContentsManager instance
 # c.FileContentsManager.post_save_hook = None
+import git
+import os.path
+
+def get_file_repo(path):
+    """ Gets the Repo object having a path somewhere within a repo
+        :path: path inside the repo object
+        :return: initialized git.Repo object or None if _path_ is not a valid path
+    """
+    p = path
+    while True:
+        try:
+            repo = git.Repo(p)
+            break
+        except git.exc.InvalidGitRepositoryError:
+            p, x = os.path.split(p)
+            continue
+
+    return repo
+
+def add_commit(repo, path):
+    """ adds given file to commit and commits it 
+        :repo: git.Repo object
+        :path: path to the file to stage
+    """
+    repo.git.add(path)
+    repo.git.commit(m='Jupyter autocommit: {}'.format(path))
+
+def jupyter_post_save(os_path, model, contents_manager):
+    repo = get_file_repo(os_path)
+    if repo is not None:
+        add_commit(repo, os_path)
+
+    contents_manager.log.info('post_save succeeded')
+
+c.FileContentsManager.post_save_hook = jupyter_post_save
 
 #------------------------------------------------------------------------------
 # NotebookNotary configuration
