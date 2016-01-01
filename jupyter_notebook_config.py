@@ -491,14 +491,12 @@ def get_file_repo(path):
     """
     p = path
     while True:
-        try:
-            repo = git.Repo(p)
-            break
-        except git.exc.InvalidGitRepositoryError:
-            p, x = os.path.split(p)
-            continue
-
-    return repo
+        if os.path.exists(os.path.join(p, '.git')):
+            return git.Repo(p)
+        else:
+            pp, x = os.path.split(p)
+            if pp == p: return None
+            p = pp
 
 def add_commit(repo, path):
     """ adds given file to commit and commits it 
@@ -509,11 +507,16 @@ def add_commit(repo, path):
     repo.git.commit(m='Jupyter autocommit: {}'.format(path))
 
 def jupyter_post_save(os_path, model, contents_manager):
-    repo = get_file_repo(os_path)
-    if repo is not None:
-        add_commit(repo, os_path)
+    try:
+        repo = get_file_repo(os_path)
+        if repo is not None:
+            add_commit(repo, os_path)
 
-    contents_manager.log.info('post_save succeeded')
+        contents_manager.log.info('post_save succeeded')
+
+    except git.GitCommandError as e:
+        contents_manager.log.error('post_save failed: {}'.format(e))
+        
 
 c.FileContentsManager.post_save_hook = jupyter_post_save
 
