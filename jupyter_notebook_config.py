@@ -1,5 +1,9 @@
 # Configuration file for jupyter-notebook.
 
+import os
+import os.path
+import git
+
 #------------------------------------------------------------------------------
 # Configurable configuration
 #------------------------------------------------------------------------------
@@ -134,7 +138,8 @@ c.NotebookApp.port = 8001
 # c.NotebookApp.tornado_settings = traitlets.Undefined
 
 # The directory to use for notebooks and kernels.
-# c.NotebookApp.notebook_dir = u''
+
+c.NotebookApp.notebook_dir = os.path.join(os.getenv('HOME'), 'repos', 'jupyter-notebooks')
 
 # The kernel manager class to use.
 # c.NotebookApp.kernel_manager_class = <class 'notebook.services.kernels.kernelmanager.MappingKernelManager'>
@@ -500,8 +505,6 @@ def scrub_output_pre_save(model, **kwargs):
 # - path: the filesystem path to the file just written - model: the model
 # representing the file - contents_manager: this ContentsManager instance
 # c.FileContentsManager.post_save_hook = None
-import git
-import os.path
 
 def get_file_repo(path):
     """ Gets the Repo object having a path somewhere within a repo
