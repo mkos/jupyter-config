@@ -4,8 +4,8 @@ This is my modification of jupyter-config. Except few minor settings, it feature
 
 ## TODO
 
-1. Fix for situation when a file is not in git repo
-2. Option to filter out output results
+1. --Fix for situation when a file is not in git repo--
+2. --Option to filter out output results-- (needs to be enabled in config)
 3. Add option for automatic push
 4. Add popups to notebook about progress/errors (if possible)
 5. Add button for push/pull
