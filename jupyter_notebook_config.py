@@ -503,8 +503,12 @@ def add_commit(repo, path):
         :repo: git.Repo object
         :path: path to the file to stage
     """
-    repo.git.add(path)
-    repo.git.commit(m='Jupyter autocommit: {}'.format(path))
+    if repo.is_dirty():
+        modified = [x.a_path for x in repo.head.commit.diff(None).iter_change_type('M')]
+        relpath = os.path.relpath(path, repo.working_dir)
+        if relpath in modified:
+            repo.git.add(relpath)
+            repo.git.commit(m='Jupyter autocommit: {}'.format(relpath))
 
 def jupyter_post_save(os_path, model, contents_manager):
     try:
