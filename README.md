@@ -1,16 +1,18 @@
 # jupyter-config
 
-This is my modification of jupyter-config. Except few minor settings, it features git-commit-on-save functionality. That is, when you hit _Save_ button, `git add` and `git commit` are run in order (but not with autosave!).
+This is my modification of jupyter-config. Except few minor settings, it features git-commit-on-save functionality. That is, when you hit _Save_ button, `git add` and `git commit` are run in order (but not with autosave!). These are run only if file is in git repo. 
 
 ## Autosave
 
 By default, autosave is set to 2 minutes. This may be somewhat disturbing and create lot of noise in the repo. You can change it or turn off entirely on two different ways:
-1. Per notebook, inside notebook: enter value in seconds, where 0 means disabled
+
+* Per notebook, inside notebook: enter value in seconds, where 0 means disabled
+
 ```       
 ## save every 30min
 %autosave 1800 
 ```
-2. Globally, [using `custom.js`](http://stackoverflow.com/questions/25631344/turn-off-autosave-in-ipython-notebook)
+* Globally, [using `custom.js`](http://stackoverflow.com/questions/25631344/turn-off-autosave-in-ipython-notebook)
 
 ## changing default config dir
 
