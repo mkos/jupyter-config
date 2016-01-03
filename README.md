@@ -11,7 +11,16 @@ By default, autosave is set to 2 minutes. This may be somewhat disturbing and cr
 %autosave 1800 
 ```
 2. Globally, [using `custom.js`](http://stackoverflow.com/questions/25631344/turn-off-autosave-in-ipython-notebook)
-        
+
+## changing default config dir
+
+By default, config dir is located in `$HOME/.jupyter`. This can be changed by exporting `JUPYTER_CONFIG_DIR` environment variable
+
+```
+export JUPYTER_CONFIG_DIR=~/.jupyter_profile2
+jupyter notebook --generate-config
+```
+
 ## TODO
 
 1. ~~Fix for situation when a file is not in git repo~~
